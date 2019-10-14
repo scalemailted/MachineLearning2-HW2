@@ -1,0 +1,2482 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="styles/bootstrap/bootstrap.min.css"></link>
+        <script src="scripts/libs/plotly/plotly-latest.min.js"></script>
+        <script src='scripts/libs/math/math.min.js'></script>
+        <script>
+                MathJax = {
+                  tex: {
+                    inlineMath: [['$', '$'], ['\\(', '\\)']]
+                  }
+                };
+        </script>
+         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+         <script id="MathJax-script" async
+                 src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+         </script>
+        <!--<script async src="scripts/libs/mathjax/tex-mml-chtml.js"></script>-->
+    </head>
+    <body>
+        <div class='container-fluid text-center bg-dark text-light'>
+            <h1>Ted Holmberg</h1>
+            <h4>CSCI 6522, FALL 2019, HW2</h4> 
+        </div>
+        
+        <div class='container-fluid'>
+            <h2>Part A.</h2>
+            <p>
+                <b><i>Task #1:</i></b> 
+                Draw the graphs of a sigmoid function $f_{sig}(x) = {1 \over 1+e^{-x}}$ 
+                and a hyperbolic tangent function, $f_{tanh}(x) = {e^x-e^{-x} \over {e^x+{e^{-x}}}}$,
+                overlapping each other, with x-axis ranging from -10 to +10.
+                Describe the differences between them.
+
+            </p>
+            <div id="plot" style="width:100%;height:480px;background-color:white;"></div>
+
+            <p>
+                <b>Explanation:</b><br>
+                Both functions produce 'S'-curves with asymptotic properties on the y-axis. 
+                The sigmoid function rapidly approaches a (min) lower limit (min) of 0 
+                and (max) upper limit of 1 on the y-axis. The hyperbolic tangent function rapidly
+                approaches a (min) lower limit of -1 and a (max) upper limit of 1 on the y-axis.
+                See the graphic above for a comparison. 
+            </p>
+        </div>
+        <hr>
+
+        <div class='container-fluid'>
+            <h2>Part B.</h2>
+            <p>
+                <b><i>Task #2:</i></b>
+                In chapter 04 (see LECTURE_Chapter_04_Neural_Network_v5) from pages 1-3, and 
+                09-13, we have developed the logistic regression (classification) algorithm
+                using sigmoid function. Similarly, develop the same in this assignment, however,
+                use the hyperbolic tangent function instead of sigmoid function.
+                <br>
+                <br>
+                Formulate the Bernoulli distribution using hyperbolic tangent function:
+                the formulation should provide higher score for correct classification, and
+                you can relax the perfect formulation of the probability space if needed.
+                <br>
+                <br>
+                You must show by cases, that for correct classification your formulated 
+                distribution returns higher value compared to the incorrect classfication.
+                Then, for the rest of the part provide your elaborate answer as described
+                in the lecture note for sigmoid function.
+                <br>
+                <br>
+                <span style='color:blue;'>
+                    Assume, Malignant class label is '+1' and Benign class label is '-1'
+                </span>
+            </p>
+
+        </div>
+
+        <div class='container-fluid'>
+            <h4>Solution:</h4>
+        </div>
+
+
+        <div class='container-fluid'>
+
+            <h4>Hyperbolic Trigonometic Identities:</h4>
+             <div>$sinh(x) = {e^x - e^{-x} \over 2}$</div>
+             <div>$cosh(x) = {e^x + e^{-x} \over 2}$</div>
+             <div>$sech(x) = {1 \over cosh(x)} = {2 \over e^x + e^{-x}}$</div>
+             <div>$csch(x) = {1 \over sinh(x)} = {2 \over e^x - e^{-x}}$</div>
+             <div>$tanh(x) = {sinh(x) \over cosh(x)} = {e^x - e^{-x} \over e^x + e^{-x}}$</div>
+             <div>$coth(x) = {1 \over tanh(x)} = {cosh(x) \over sinh(x)} = {e^x + e^{-x} \over e^x - e^{-x}}$</div>
+        </div>
+
+        <div class='container-fluid'>
+            <h4 class='display'>Part B.</h4>
+            <div> 
+                    <b>Step 1:</b> <br>
+                    Code the two-class $\text{g}_i$ via a -1/1 response $\text{y}_i$,
+                    where $\text{y}_i = 1$ when $\text{g}_i = 1$, and $\text{y}_i = -1$ when $\text{g}_i = 2$.        <br>
+                                                                                          <br>
+                    Let $p_1(x; θ) = p(x; θ)$, and $p_2(x; θ) = 1 − p(x; θ)$.             <br> 
+                    We can model the output using the <b><i>Bernoulli distribution</i></b>, i.e., <br>
+                    $$ \text{y}_i \space \sim Bernoulli( \eta_i ) ,$$               
+                    where,$ \space \eta_i = f_{tanh}(x^T\beta)=p(x_i;\beta)$              <br>                                 <br>
+                    Therefore, we can write:                                              <br>
+                    $$ 
+                        P(\text{y}_i) = 
+                        \eta_{i}^{ {1 \over 2}( 1+ \text{y}_i)} 
+                        \times
+                        - \eta_{i}^{ -{1 \over 2}( \text{y}_i - 1)} 
+                    $$
+                    Hence,the <b><i>likelihood</i></b> 
+                    $
+                        L(\beta) =  
+                            \prod\limits_{i=1}^{N} P(\text{y}_i)
+                            =
+                            \prod\limits_{i=1}^{N} 
+                                \left(
+                                \eta_{i}^{ {1 \over 2}( 1+ \text{y}_i)} 
+                                \times
+                                - \eta_{i}^{ -{1 \over 2}( \text{y}_i - 1)}
+                                \right)
+                            
+                    $                                                                     <br>
+                                                                                          <br>
+                    <b><i>Log-likelihood</i></b> can be written:                          <br>
+                    $
+                        l(\beta) = \text{log} \space L(\beta) = 
+                            \sum\limits_{i=1}^{N}
+                            \left \{
+                                \left [
+                                    {1 \over 2}(1+ \text{y}_i) \cdot  \text{log}(\eta_i)
+                                \right ]
+                                +
+                                \left [
+                                    -{1 \over 2}(\text{y}_i - 1) \cdot  \text{log}(- \eta_i)
+                                \right ]
+                            \right \}
+                    $                                                                    <br>
+                                                                                         <br>
+                    $
+                     = \sum\limits_{i=1}^{N}
+                     \left \{
+                         \left [ \space
+                             {1 \over 2}(1+ \text{y}_i) \cdot  \text{log}
+                             \left (
+                                f_{tanh}(x^T,\beta)
+                            \right )
+                         \right ]
+                         +
+                         \left [
+                             -{1 \over 2}(\text{y}_i - 1) \cdot  \text{log} 
+                             \left(
+                                 - f_{tanh}(x^T,\beta)
+                             \right)
+                        \right ]
+                     \right \}
+                    $                                                                   <br>
+                    ,where 
+                    $
+                        tanh(X^t,\beta) = 
+                        { 
+                            {e^{X^T \beta} - e^{-X^T \beta}} 
+                        \over 
+                            {e^{X^T \beta} + e^{-X^T \beta}} 
+                        }
+                    $                                                                   <br> 
+                                                                                        <br>          
+            </div>
+            <div>
+                Next, we need to take the gradient to get the $\beta$ that maximizes the log-likelihood. 
+                However, since the terms will be longer, we like to compute the gradient by partsof the 
+                above Equation (#todo). Let us compute the derivatives of the first part of (#todo)
+                <br>
+                $$
+                    {\partial \over \partial \beta_j } 
+                    \Big( \space
+                        l(\beta) 
+                    \space \Big)
+                $$
+                <br>
+                
+                $$
+                    {\partial \over \partial \beta_j } 
+                    \Bigg( \space
+                        \sum\limits_{i=1}^{N}
+                        \left \{
+                            \left [ \space
+                                {1 \over 2}(1+ \text{y}_i) \cdot  \text{log}
+                                \left (
+                                f_{tanh}(x^T,\beta)
+                            \right )
+                            \right ]
+                            +
+                            \left [
+                                -{1 \over 2}(\text{y}_i - 1) \cdot  \text{log} 
+                                \left(
+                                    - f_{tanh}(x^T,\beta)
+                                \right)
+                        \right ]
+                        \right \} 
+                    \space \Bigg)
+                $$
+
+                <br> 
+                $$
+                    {\partial \over \partial \beta_j } 
+                    \Bigg( \space
+                        \sum\limits_{i=1}^{N}
+                        \left \{
+                                {1 \over 2}(1+ \text{y}_i) \cdot  \text{log}
+                                \left (
+                                f_{tanh}(x^T,\beta)
+                            \right )
+                            \right \}
+                        +
+                        \sum\limits_{i=1}^{N}
+                            \left \{
+                                -{1 \over 2}(\text{y}_i - 1) \cdot  \text{log} 
+                                \left(
+                                    - f_{tanh}(x^T,\beta)
+                                \right)
+                        \right \} 
+                    \space \Bigg)
+                $$
+
+                <br> 
+                $$
+                    {\partial \over \partial \beta_j } 
+                    \Bigg( \space
+                        \sum\limits_{i=1}^{N}
+                        \left \{
+                            {1 \over 2}(1+ \text{y}_i) \cdot  \text{log}
+                            \Big ( \space
+                                f_{tanh}(x^T,\beta)
+                            \Big )
+                        \right \}
+                    \space \Bigg)
+                    +
+                    {\partial \over \partial \beta_j } 
+                    \Bigg( \space
+                        \sum\limits_{i=1}^{N}
+                            \left \{
+                            -{1 \over 2}(\text{y}_i - 1) \cdot  \text{log} 
+                            \Big(
+                                - f_{tanh}(x^T,\beta)
+                            \Big)
+                        \right \} 
+                    \space \Bigg)
+                $$
+            </div>
+
+            <div>
+                <h4>Left Part:</h4>
+                <p>
+                    $
+                        {\partial \over \partial \beta_j } 
+                        \Bigg( \space
+                            \sum\limits_{i=1}^{N}
+                            \left \{
+                                {1 \over 2}(1+ \text{y}_i) \cdot  \text{log}
+                                \big ( \space
+                                    f_{tanh}(x^T,\beta)
+                                \big )
+                            \right \}
+                        \space \Bigg)
+                    $
+                </p>
+                <p>
+                    $
+                        =
+                        \Big [
+                            {1 \over 2}(1+ \text{y}_i)
+                        \Big ]
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Bigg( \space
+                            \sum\limits_{i=1}^{N}
+                            \Big \{
+                                \text{log}
+                                \big ( \space
+                                    f_{tanh}(x^T,\beta)
+                                \big )
+                            \Big \}
+                        \space \Bigg)
+                    $
+                </p>
+                <p>
+                    $
+                        =
+                        \Big [
+                            {1 \over 2}(1+ \text{y}_i)
+                        \Big ]
+                        \cdot
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {\partial \over \partial \beta_j } 
+                            \Big( \space
+                                \text{log}
+                                \big ( \space
+                                    f_{tanh}(x^T,\beta)
+                                \big )
+                            \space \Big)
+                        \Bigg \}
+                    $
+                </p>
+
+                <p>
+                    $
+                        =
+                        \Big [
+                            {1 \over 2}(1+ \text{y}_i)
+                        \Big ]
+                        \cdot
+                        \Bigg \{
+                            {\partial \over \partial \beta_j } 
+                                \Big( \space
+                                \text{log}
+                                \big ( \space
+                                    f_{tanh}(x_1,\beta_1)
+                                \big )
+                             \space \Big)
+                            +
+                                \cdots
+                            +
+                            {\partial \over \partial \beta_j } 
+                            \Big( \space
+                                \text{log}
+                                \big ( \space
+                                    f_{tanh}(x_j,\beta_j)
+                                \big )
+                            \space \Big)
+                            +
+                                \cdots
+                            +
+                                {\partial \over \partial \beta_j } 
+                                \Big( \space
+                                    \text{log}
+                                    \big ( \space
+                                        f_{tanh}(x_N,\beta_N)
+                                    \big )
+                                \space \Big)
+                        \Bigg \}
+                    $
+                </p>
+
+                <p>
+                    $
+                        =
+                        \Big [
+                            {1 \over 2}(1+ \text{y}_i)
+                        \Big ]
+                        \cdot
+                        \Bigg \{
+                            0
+                            +
+                                \cdots
+                            +
+                            {\partial \over \partial \beta_j } 
+                            \Big( \space
+                                \text{log}
+                                \big ( \space
+                                    f_{tanh}(x_j,\beta_j)
+                                \big )
+                            \space \Big)
+                            +
+                                \cdots
+                            +
+                             0
+                        \Bigg \}
+                    $
+                </p>
+
+                <p>
+                    $
+                        =
+                        \Big [
+                            {1 \over 2}(1+ \text{y}_j)
+                        \Big ]
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big[ \space
+                            \text{log}
+                            \big ( \space
+                                f_{tanh}(x_j,\beta_j)
+                            \big )
+                        \space \Big]
+                    $
+                </p>
+                <p>
+                    Apply chain rule to solve derivative on nested functions<br>
+                    $
+                        =
+                        \Big [
+                            {1 \over 2}(1+ \text{y}_j)
+                        \Big ]
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big[ \space
+                            \text{log}
+                            \big ( \space
+                                f_{tanh}(x_j,\beta_j)
+                            \big )
+                        \space \Big]
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big[ \space
+                            f_{tanh}(x_j,\beta_j)
+                        \space \Big]
+                    $
+                    </p>
+
+                <p>
+                    Use <i>u</i> substution to solve derivative of log value.<br>
+                    $
+                       {d \over du}
+                       \Big (
+                        \text{log}(u)
+                       \Big )
+                       = {1 \over u}
+                    $
+                     ; where  
+                    $
+                        u = f_{tanh}(x_j,\beta_j)
+                    $
+                    <br>
+                    Then resubstitue $f$ back in for $u$,
+                    <br>
+                    $
+                        {\partial \over \partial \beta_j} 
+                        \Big [
+                            \text{log}
+                            \big( 
+                                tanh(x_j,\beta_j) 
+                            \big )
+                        \Big ] 
+                        = 
+                        {1 \over tanh(x_j,\beta_j)}
+                        =
+                        coth(x_j,\beta_j)
+                    $
+                    <br>
+                    Thus,
+                    <br>
+                    $
+                        =
+                        \Big [
+                            {1 \over 2}(1+ \text{y}_j)
+                        \Big ]
+                        \cdot
+                        coth(x_j,\beta_j)
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            tanh(x_j,\beta_j)
+                        \space \Big)
+                    $
+                </p>
+                <p>
+                    Short answer:<br> 
+                    Use trigonmetric rules and chain rule to derive solution instantly:
+                    <br>
+                    $
+                        {\partial \over \partial \beta_j} \Big( tanh(x_j\beta_j) \Big)
+                        = {\partial \over \partial \beta_j} \Big( tanh(x_j\beta_j) \Big) 
+                        \cdot {\partial \over \partial \beta_j} (x_j\beta_j) 
+                        = sech^2(x_j\beta_j) \cdot x_j
+                    $
+
+                </p>
+                <p>
+                    Long answer:<br>
+                    Apply the Quotient Rule
+                    $ 
+                        \big (
+                            {f \over g}
+                        \big )'
+                        =
+                        { f' \cdot  g - g' \cdot f \over g^2}
+                    $
+                    , where
+                    $ f = ( {e^{x_j \beta_j} - e^{-x_j \beta_j}} )$
+                    $, g =( {e^{x_j \beta_j} + e^{-x_j \beta_j}} )$ 
+                    <br>
+                    <br>
+                    $
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            tanh(x_j,\beta_j)
+                        \space \Big)
+                        =
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                        { 
+                            {e^{x_j \beta_j} - e^{-x_j \beta_j}} 
+                        \over 
+                            {e^{x_j \beta_j} + e^{-x_j \beta_j}} 
+                        }
+                        \space \Big)
+                    $
+                    <br>
+                    <br>
+                    $
+                    =
+                    {
+                        {
+                            {\partial \over \partial \beta_j}
+                            ( \space
+                                e^{x_j \beta_j} - e^{-x_j \beta_j}
+                            )
+                            \cdot
+                            ( \space
+                            e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )
+                            \space
+                            -
+                            \space
+                            ( \space
+                            e^{x_j \beta_j} - e^{-x_j \beta_j}
+                            )
+                            \cdot
+                            {\partial \over \partial \beta_j}
+                            ( \space
+                            e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )
+
+                            
+                        }
+                        \over
+                        {
+                            (
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )^2
+                        }
+                    }
+                    $
+                </p>
+                <p>
+                    Distribute derviative operation to each term in parenthesis
+                    <br><br>
+                    $
+                        =
+                        {
+                            {
+                                \Big [
+                                {\partial \over \partial \beta_j} ( e^{x_j \beta_j} )
+                                \space
+                                -
+                                \space
+                                {\partial \over \partial \beta_j} ( e^{-x_j \beta_j} )
+                                \Big ]
+                                \cdot
+                                ( \space
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )
+                                \space
+                                -
+                                \space
+                                ( \space
+                                e^{x_j \beta_j} - e^{-x_j \beta_j}
+                                )
+                                \cdot
+                                \Big [
+                                {\partial \over \partial \beta_j} ( e^{x_j \beta_j} )
+                                \space
+                                +
+                                \space
+                                {\partial \over \partial \beta_j} ( e^{-x_j \beta_j} )
+                                \Big ]
+
+                                
+                            }
+                            \over
+                            {
+                                (
+                                    e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )^2
+                            }
+                        }
+                    $
+                </p>
+                <p>
+                    Use derivatives rules for exponentials to solve numerator
+                    where ${d \over dx}(e^{cx}) = c \cdot e^{cx}$
+                    <br><br>
+                    $
+                        =
+                        {
+                            {
+                                \Big [
+                                x_j \cdot e^{x_j \beta_j} 
+                                \space
+                                -
+                                \space
+                                -x_j \cdot e^{-x_j \beta_j} 
+                                \Big ]
+                                \cdot
+                                ( \space
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )
+                                \space
+                                -
+                                \space
+                                ( \space
+                                e^{x_j \beta_j} - e^{-x_j \beta_j}
+                                )
+                                \cdot
+                                \Big [
+                                 x_j \cdot e^{x_j \beta_j}
+                                \space
+                                +
+                                \space
+                                -x_j \cdot e^{-x_j \beta_j} 
+                                \Big ]
+
+                                
+                            }
+                            \over
+                            {
+                                (
+                                    e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )^2
+                            }
+                        }
+                    $
+                </p>
+
+                <p>
+                    Multiply the binomial expressions together
+                    <br><br>
+                    $
+                        =
+                        {
+                            {
+                                \Big [
+                                x_j \cdot e^{x_j \beta_j} 
+                                \space
+                                +
+                                \space
+                                x_j \cdot e^{-x_j \beta_j} 
+                                \Big ]
+                                \cdot
+                                ( \space
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )
+                                \space
+                                -
+                                \space
+                                ( \space
+                                e^{x_j \beta_j} - e^{-x_j \beta_j}
+                                )
+                                \cdot
+                                \Big [
+                                    x_j \cdot e^{x_j \beta_j}
+                                \space
+                                +
+                                \space
+                                -x_j \cdot e^{-x_j \beta_j} 
+                                \Big ]
+                            }
+                            \over
+                            {
+                                (
+                                    e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )^2
+                            }
+                        }
+                    $
+                </p>
+
+                <p>
+                    $
+                        =
+                        {
+                            {
+                                (
+                                x_je^{x_j \beta_j} 
+                                \space
+                                +
+                                \space
+                                x_je^{-x_j \beta_j} 
+                                )
+                                \cdot
+                                ( \space
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )
+                                \space
+                                -
+                                \space
+                                ( \space
+                                e^{x_j \beta_j} - e^{-x_j \beta_j}
+                                )
+                                \cdot
+                                (
+                                    x_je^{x_j \beta_j}
+                                \space
+                                -
+                                \space
+                                x_je^{-x_j \beta_j} 
+                                )
+                            }
+                            \over
+                            {
+                                (
+                                    e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )^2
+                            }
+                        }
+                    $
+                </p>
+
+                <p>
+                    $
+                        =
+                        {
+                            {
+                                \Big [
+                                    x_je^{x_j\beta_j}e^{x_j\beta_j}
+                                    + x_je^{x_j\beta_j}e^{-x_j\beta_j}
+                                    + x_je^{-x_j\beta_j}e^{x_j\beta_j}
+                                    + x_je^{-x_j\beta_j}e^{-x_j\beta_j}
+                                \Big ]
+                                -
+                                \Big [
+                                    x_je^{x_j\beta_j}e^{x_j\beta_j}
+                                    - x_je^{-x_j\beta_j}e^{x_j\beta_j}
+                                    - x_je^{x_j\beta_j}e^{-x_j\beta_j}
+                                    + x_je^{-x_j\beta_j}e^{-x_j\beta_j}
+                                \Big ]
+                            }
+                            \over
+                            {
+                                (
+                                    e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )^2
+                            }
+                        }
+                    $
+                </p>
+
+                <p>
+                    Use exponent rules to merge simplify exponent expressions with same base
+                    <br><br>
+                    $
+                        =
+                        {
+                            {
+                                \Big [
+                                    x_je^{2x_j\beta_j}
+                                    + x_je^0
+                                    + x_je^0
+                                    + x_je^{-2x_j\beta_j}
+                                \Big ]
+                                -
+                                \Big [
+                                    x_je^{2x_j\beta_j}
+                                    - x_je^0
+                                    - x_je^0
+                                    + x_je^{-2x_j\beta_j}
+                                \Big ]
+                            }
+                            \over
+                            {
+                                (
+                                    e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )^2
+                            }
+                        }
+                    $
+                </p>
+
+                <p>
+                    Apply rule such that $x^0 = 1$
+                    <br><br>
+                    $
+                        =
+                        {
+                            {
+                                \Big [
+                                    x_je^{2x_j\beta_j}
+                                    + x_j
+                                    + x_j
+                                    + x_je^{-2x_j\beta_j}
+                                \Big ]
+                                -
+                                \Big [
+                                    x_je^{2x_j\beta_j}
+                                    - x_j
+                                    - x_j
+                                    + x_je^{-2x_j\beta_j}
+                                \Big ]
+                            }
+                            \over
+                            {
+                                (
+                                    e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )^2
+                            }
+                        }
+                    $
+                </p>
+
+                <p>
+                    Distribute negative sign to righthand expression in numerator
+                    <br><br>
+                    $
+                        =
+                        {
+                            {
+                                \Big [
+                                    x_je^{2x_j\beta_j}
+                                    + x_j
+                                    + x_j
+                                    + x_je^{-2x_j\beta_j}
+                                \Big ]
+                                +
+                                \Big [
+                                    - x_je^{2x_j\beta_j}
+                                    + x_j
+                                    + x_j
+                                    - x_je^{-2x_j\beta_j}
+                                \Big ]
+                            }
+                            \over
+                            {
+                                (
+                                    e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )^2
+                            }
+                        }
+                    $
+                </p>
+
+                <p>
+                    Group like terms
+                    <br><br>
+                    $
+                        =
+                        {
+                            {
+                                (
+                                    x_je^{2x_j\beta_j}
+                                    - x_je^{2x_j\beta_j}
+                                )
+                                + 
+                                (
+                                    x_j
+                                    + x_j
+                                    + x_j
+                                    + x_j
+                                )
+                                + 
+                                (
+                                    x_je^{-2x_j\beta_j}
+                                    - x_je^{-2x_j\beta_j}
+                                )
+                            }
+                            \over
+                            {
+                                (
+                                    e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )^2
+                            }
+                        }
+                    $
+                </p>
+
+                <p>
+                    Cancel terms and Combine terms
+                    <br><br>
+                    $
+                        =
+                        {
+                            {
+                                \enclose{horizontalstrike}{
+                                (
+                                    x_je^{2x_j\beta_j}
+                                    - x_je^{2x_j\beta_j}
+                                )}
+                                + \space
+                                    4x_j
+                                \space +
+                                \enclose{horizontalstrike}{ 
+                                (
+                                    x_je^{-2x_j\beta_j}
+                                    - x_je^{-2x_j\beta_j}
+                                )}
+                            }
+                            \over
+                            {
+                                (
+                                    e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )^2
+                            }
+                        }
+                    $
+                </p>
+
+                <p>
+                    Redefine result as $secth^2(x_j\beta_j)$. Note that: ${d \over dx}\Big(tanh(x)\Big) = {sech(x)^2}$<br>
+                    Since $sech(x) = {2 \over e^x + e^{-x}}$ then $sech^2(x) = {4 \over (e^x + e^{-x})^2}$ 
+                    <br><br>
+                    $
+                        =
+                        {
+                            { 4x_j}
+                            \over
+                            { ( e^{x_j \beta_j} + e^{-x_j \beta_j} )^2 }
+                        }
+                    $
+                    $
+                        =
+                        { 4 \over ( e^{x_j \beta_j} + e^{-x_j \beta_j} )^2 }x_j
+                    $
+                    $
+                        = {1 \over cos^2(x_j\beta_j) }x_j
+                    $
+                    $
+                        = sech^2(x_j\beta_j) \cdot x_j
+                    $
+                    $
+                        = x_jsech^2(x_j\beta_j)
+                    $
+                </p>
+
+                <p>
+                    <b>Left Part Solution:</b> <br>
+                    $
+                        {1 \over 2}(1 + y_j) \cdot coth(x_j\beta_j) \cdot x_jsech^2(x_j\beta_j)
+                    $
+                </p>
+                <p>
+                    $
+                        = {x_j \over 2}(1 + y_j) 
+                        \cdot {cosh(x_j\beta_j) \over sinh(x_j\beta_j) }
+                        \cdot {1 \over cosh^2(x_j\beta_j) }
+                    $
+                </p>
+                <p>
+                    $
+                        = {x_j \over 2}(1 + y_j) 
+                        \cdot {\enclose{horizontalstrike}{ cosh(x_j\beta_j)} \over sinh(x_j\beta_j) }
+                        \cdot {1 \over cosh(x_j\beta_j) \cdot \enclose{horizontalstrike}{ cosh(x_j\beta_j)} }
+                    $
+                </p>
+                <p>
+                        $
+                            = {x_j \over 2}(1 + y_j) 
+                            \cdot {1 \over sinh(x_j\beta_j)} 
+                            \cdot {1 \over cosh(x_j\beta_j)} 
+                        $
+                    </p>
+                <p>
+                    $
+                        = {x_j \over 2}(1 + y_j) 
+                        \cdot csch(x_j\beta_j) 
+                        \cdot sech(x_j\beta_j) 
+                    $
+                </p>
+            </div>
+
+            <hr>
+            <div>
+                    <h4>Right Part:</h4>
+                    <p>
+                        $
+                        {\partial \over \partial \beta_j } 
+                        \Bigg( \space
+                            \sum\limits_{i=1}^{N}
+                                \Big \{
+                                -{1 \over 2}(\text{y}_i - 1) \cdot  \text{log} 
+                                \Big(
+                                    - tanh(x^T\beta)
+                                \Big)
+                            \Big \} 
+                        \space \Bigg)
+                        $
+                    </p>
+                    <p>
+                        $
+                            =
+                                \sum\limits_{i=1}^{N}
+                                \Bigg \{
+                                {\partial \over \partial \beta_j } 
+                                \Big(
+                                    -{1 \over 2}(\text{y}_i - 1) \cdot  \text{log} 
+                                    \big(
+                                        - tanh(x^T\beta)
+                                    \big)
+                                \Big)
+                                \Bigg \} 
+                        $
+                    </p>
+                    <p>
+                        $
+                            =
+                                \sum\limits_{i=1}^{N}
+                                \Bigg \{
+                                -{1 \over 2}(\text{y}_i - 1) 
+                                \cdot
+                                {\partial \over \partial \beta_j } 
+                                \Big(
+                                    \text{log} 
+                                    \big(
+                                        - tanh(x_i\beta_i)
+                                    \big)
+                                \Big)
+                                \Bigg \} 
+                        $
+                    </p>
+                    <p>
+                        $
+                            =
+                            \Bigg \{
+                            -{1 \over 2}(\text{y}_1 - 1) 
+                            \cdot
+                            {\partial \over \partial \beta_j } 
+                            \Big(
+                                \text{log} 
+                                \big(
+                                    - tanh(x_1\beta_1)
+                                \big)
+                            \Big)
+
+                            +
+                            \cdots
+                            +
+
+                            -{1 \over 2}(\text{y}_j - 1) 
+                            \cdot
+                            {\partial \over \partial \beta_j } 
+                            \Big(
+                                \text{log} 
+                                \big(
+                                    - tanh(x_j\beta_j)
+                                \big)
+                            \Big)
+
+                            +
+                            \cdots
+                            +
+
+                            -{1 \over 2}(\text{y}_N - 1) 
+                            \cdot
+                            {\partial \over \partial \beta_j } 
+                            \Big(
+                                \text{log} 
+                                \big(
+                                    - tanh(x_N\beta_N)
+                                \big)
+                            \Big)
+                            \Bigg \} 
+
+                        $
+                    </p>
+
+                    <p>
+                        $
+                            =
+                            \Bigg \{
+                            -{1 \over 2}(\text{y}_1 - 1) 
+                            \cdot 0 
+
+                            +
+                            \cdots
+                            +
+
+                            -{1 \over 2}(\text{y}_j - 1) 
+                            \cdot
+                            {\partial \over \partial \beta_j } 
+                            \Big(
+                                \text{log} 
+                                \big(
+                                    - tanh(x_j\beta_j)
+                                \big)
+                            \Big)
+
+                            +
+                            \cdots
+                            +
+                            
+                            -{1 \over 2}(\text{y}_N - 1) 
+                            \cdot 0
+                            \Bigg \} 
+
+                        $
+                </p>
+
+                <p>
+                    $
+                        =
+                        \Bigg \{
+                        0 + \cdots +
+
+                        -{1 \over 2}(\text{y}_j - 1) 
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big(
+                            \text{log} 
+                            \big(
+                                - tanh(x_j\beta_j)
+                            \big)
+                        \Big)
+
+                        + \cdots + 0
+                        \Bigg \} 
+
+                    $
+                </p>
+
+                <p>
+                    $
+                        =
+                        -{1 \over 2}(\text{y}_j - 1) 
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big(
+                            \text{log} 
+                            \big(
+                                - tanh(x_j\beta_j)
+                            \big)
+                        \Big)
+
+                    $
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    Apply chain rule to solve derivative on nested functions<br>
+                    $
+                        =
+                        -{1 \over 2}(\text{y}_j - 1)
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            \text{log}
+                            \big ( \space
+                                - tanh(x_j\beta_j)
+                            \big )
+                        \space \Big)
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            - tanh(x_j\beta_j)
+                        \space \Big)
+                    $
+                </p>
+
+                <p>
+                    Use <i>u</i> substution to solve derivative of log value.<br>
+                    $
+                        {d \over du}
+                        \Big (
+                        \text{log}(u)
+                        \Big )
+                        = {1 \over u}
+                    $
+                        ; where  
+                    $
+                        u = - tanh(x_j\beta_j)
+                    $
+                    <br>
+                    Then resubstitue $f$ back in for $u$,
+                    <br>
+                    $
+                        {\partial \over \partial \beta_j} 
+                        \Big [
+                            \text{log}
+                            \big( 
+                                -tanh(x_j\beta_j) 
+                            \big )
+                        \Big ] 
+                        = 
+                        {1 \over -tanh(x_j\beta_j)}
+                        =
+                        -coth(x_j\beta_j)
+                    $
+                    <br>
+                    Thus,
+                    <br>
+                    $
+                        =
+                        - {1 \over 2}(\text{y}_j - 1)
+                        \cdot
+                        - coth(x_j\beta_j)
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            - tanh(x_j\beta_j)
+                        \space \Big)
+                    $
+                    <br>
+                    $
+                        =
+                        {1 \over 2}(\text{y}_j - 1)
+                        \cdot
+                        coth(x_j\beta_j)
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            - tanh(x_j\beta_j)
+                        \space \Big)
+                    $
+                </p>
+                <p>
+                    Short answer:<br> 
+                    Use trigonmetric rules and chain rule to derive solution instantly:
+                    <br>
+                    $
+                        {\partial \over \partial \beta_j} \Big( - tanh(x_j\beta_j) \Big)
+                        = {\partial \over \partial \beta_j} \Big( - tanh(x_j\beta_j) \Big) 
+                        \cdot {\partial \over \partial \beta_j} (x_j\beta_j) 
+                        = - sech^2(x_j\beta_j) \cdot x_j
+                    $
+
+                </p>
+            </div>
+            <div>
+                $
+                    =
+                    {1 \over 2}(\text{y}_j - 1)
+                    \cdot
+                    coth(x_j\beta_j)
+                    \cdot
+                    - sech^2(x_j\beta_j) \cdot x_j
+                $
+            </div>
+            <div>
+                <br>
+                $
+                    =
+                    {x_j \over 2}(1 - \text{y}_j)
+                    \cdot
+                    coth(x_j\beta_j)
+                    \cdot
+                    sech^2(x_j\beta_j)
+                $
+            </div>
+            <div>
+                <p>
+                    $
+                        = {x_j \over 2}(1 - \text{y}_j) 
+                        \cdot {cosh(x_j\beta_j) \over sinh(x_j\beta_j) }
+                        \cdot {1 \over cosh^2(x_j\beta_j) }
+                    $
+                </p>
+                <p>
+                    $
+                        = {x_j \over 2}(1 - \text{y}_j) 
+                        \cdot {\enclose{horizontalstrike}{ cosh(x_j\beta_j)} \over sinh(x_j\beta_j) }
+                        \cdot {1 \over cosh(x_j\beta_j) \cdot \enclose{horizontalstrike}{ cosh(x_j\beta_j)} }
+                    $
+                </p>
+                <p>
+                        $
+                            = {x_j \over 2}(1 - \text{y}_j) 
+                            \cdot {1 \over sinh(x_j\beta_j)} 
+                            \cdot {1 \over cosh(x_j\beta_j)} 
+                        $
+                    </p>
+                <p>
+                    $
+                        = {x_j \over 2}(1 - \text{y}_j) 
+                        \cdot csch(x_j\beta_j) 
+                        \cdot sech(x_j\beta_j) 
+                    $
+                </p>
+            </div>
+
+            <div>
+                <h4>Solution</h4>
+                <p>
+                    $
+                    = 
+                    \big [
+                    {x_j \over 2}(1 + \text{y}_j) 
+                    \cdot csch(x_j\beta_j) 
+                    \cdot sech(x_j\beta_j) 
+                    \big ]
+                    +
+                    \big [
+                    {x_j \over 2}(1 - \text{y}_j) 
+                    \cdot csch(x_j\beta_j) 
+                    \cdot sech(x_j\beta_j) 
+                    \big ]
+                    $
+                </p>
+                <!--
+                <br>
+                <p>
+                    $
+                    = 
+                    {1 \over 2} \big [
+                    x_j(1 + \text{y}_j) 
+                    \cdot csch(x_j\beta_j) 
+                    \cdot sech(x_j\beta_j) 
+                    \big ]
+                    +
+                    {1 \over 2} \big [
+                    x_j(1 - \text{y}_j) 
+                    \cdot csch(x_j\beta_j) 
+                    \cdot sech(x_j\beta_j) 
+                    \big ]
+                    $
+                </p>
+                -->
+                <!--
+                <br>
+                <p>
+                    $
+                    = 
+                    x_j(1 + \text{y}_j) 
+                    \cdot csch(x_j\beta_j) 
+                    \cdot sech(x_j\beta_j) 
+                    $
+                </p>
+                -->
+                <br>
+                <p>
+                    $
+                    = 
+                    \big [
+                    {x_j \over 2} 
+                    \cdot csch(x_j\beta_j) 
+                    \cdot sech(x_j\beta_j)
+                    \big ]
+                    \cdot
+                    \big [
+                    (1 + \text{y}_j) 
+                    \cdot
+                    (1 - \text{y}_j) 
+                    \big ]
+                    $
+                </p>
+
+                <br>
+                <p>
+                    $
+                    = 
+                    {x_j \over 2 sinh(x_j\beta_j) cosh(x_j \beta_j)} 
+                    \cdot
+                    \big [
+                    (1 + \text{y}_j) 
+                    \cdot
+                    (1 - \text{y}_j) 
+                    \big ]
+                    $
+                </p>
+
+                <br>
+                <p>
+                    $
+                    = 
+                    {x_j \over 2 sinh(x_j\beta_j) cosh(x_j \beta_j)} 
+                    \cdot
+                    (1 - \text{y}_{j}^{2})
+                    $
+                </p>
+            </div>
+
+            <!-- #ATTEMPT 2-->
+
+            <div>
+                <h4>Attempt 2: MUST RESOLVE NEGATIVE LOF FXN; Impacts Rightside</h4>
+                <p>
+                    Since you cannot have a negative value within a log term, 
+                    must distribute the negative value into the $-\eta_i$ function
+                    <br>
+                    Given $\eta_i = tanh(X^T\beta) = { e^{X^{T}\beta} - e^{-X^{T}\beta} \over e^{X^{T}\beta} + e^{-X^{T}\beta}}$
+                    <br>
+                    Thus, 
+                    $
+                    -\eta_i  = -tanh(X^T\beta)  
+                    $
+                    $
+                    = - \big (  { e^{X^{T}\beta} - e^{-X^{T}\beta} \over e^{X^{T}\beta} + e^{-X^{T}\beta}} \big ) 
+                    $
+                    $
+                    = { -e^{X^{T}\beta} + e^{-X^{T}\beta} \over e^{X^{T}\beta} + e^{-X^{T}\beta}} 
+                    $
+                </p>
+                <br><br>
+                <h4>Right Part:</h4>
+                <!--
+                <p>
+                    $
+                        = -{1 \over 2} (y_j - 1) \cdot {\partial \over  \partial\beta_j}
+                        \Big (
+                            \text{log}
+                            \big (
+                                { -e^{X^{T}\beta} + e^{-X^{T}\beta} \over e^{X^{T}\beta} + e^{-X^{T}\beta}}
+                            \big )
+                        \Big )
+                    $
+                </p>
+                -->
+                <p>
+                    $
+                        = -{1 \over 2} (y_j - 1) \cdot {\partial \over  \partial\beta_j}
+                        \Big (
+                            \text{log}
+                            \big (
+                                { -e^{x_j\beta_j} + e^{-x_j\beta_j} \over e^{x_j\beta_j} + e^{-x_j\beta_j}}
+                            \big )
+                        \Big )
+                    $
+                    <br><br>
+                    $
+                        = -{1 \over 2} (y_j - 1) \cdot {\partial \over  \partial\beta_j}
+                        \Big (
+                            \text{log}
+                            \big (
+                                { -e^{x_j\beta_j} + e^{-x_j\beta_j} \over cosh(x_j\beta_j) }
+                            \big )
+                        \Big )
+                    $
+                </p>
+                <br><br>
+                <p>
+                    Apply chain rule to solve derivative on nested functions<br>
+                    $
+                        =
+                        -{1 \over 2}(\text{y}_j - 1)
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            \text{log}
+                            \big ( \space
+                                { -e^{x_j\beta_j} + e^{-x_j\beta_j} \over cosh(x_j\beta_j) }
+                            \big )
+                        \space \Big)
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            { -e^{x_j\beta_j} + e^{-x_j\beta_j} \over cosh(x_j\beta_j) }
+                        \space \Big)
+                    $
+                </p>
+
+                <p>
+                    Use <i>u</i> substution to solve derivative of log value.<br>
+                    $
+                        {d \over du}
+                        \Big (
+                        \text{log}(u)
+                        \Big )
+                        = {1 \over u}
+                    $
+                        ; where  
+                    $
+                        u = { -e^{x_j\beta_j} + e^{-x_j\beta_j} \over cosh(x_j\beta_j) }
+                    $
+                    <br>
+                    Then resubstitue $f$ back in for $u$,
+                    <br>
+                    $
+                        {\partial \over \partial \beta_j} 
+                        \Big [
+                            \text{log}
+                            \big( 
+                                { -e^{x_j\beta_j} + e^{-x_j\beta_j} \over cosh(x_j\beta_j) }
+                            \big )
+                        \Big ] 
+                        = 
+                        {1 \over \Big( { -e^{x_j\beta_j} + e^{-x_j\beta_j} \over cosh(x_j\beta_j)} \Big) }
+                        =
+                        { cosh(x_j\beta_j) \over -e^{x_j\beta_j} + e^{-x_j\beta_j}  }
+                    $
+                    <br>
+                    Thus,
+                    <br>
+                    $
+                        =
+                        - {1 \over 2}(\text{y}_j - 1)
+                        \cdot
+                            { cosh(x_j\beta_j) \over -e^{x_j\beta_j} + e^{-x_j\beta_j}  }
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            { -e^{x_j\beta_j} + e^{-x_j\beta_j} \over cosh(x_j\beta_j) }
+                        \space \Big)
+                    $
+                </p>
+
+                <p>
+                    Apply negative sign in expression to redefine sinh function
+                    <br>
+                    $
+                        =
+                        {1 \over 2}(\text{y}_j - 1)
+                        \cdot
+                            { cosh(x_j\beta_j) \over -(-e^{x_j\beta_j} + e^{-x_j\beta_j})  }
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            { -e^{x_j\beta_j} + e^{-x_j\beta_j} \over cosh(x_j\beta_j) }
+                        \space \Big)
+                    $
+                </p>
+                <br>
+                <p>
+                    $
+                        =
+                        {1 \over 2}(\text{y}_j - 1)
+                        \cdot
+                            { cosh(x_j\beta_j) \over e^{x_j\beta_j} - e^{-x_j\beta_j}  }
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            { -e^{x_j\beta_j} + e^{-x_j\beta_j} \over cosh(x_j\beta_j) }
+                        \space \Big)
+                    $
+                </p>
+                <br>
+                <p>
+                    $
+                        =
+                        {1 \over 2}(\text{y}_j - 1)
+                        \cdot
+                            { cosh(x_j\beta_j) \over sinh(x_j\beta_j)  }
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            { -e^{x_j\beta_j} + e^{-x_j\beta_j} \over cosh(x_j\beta_j) }
+                        \space \Big)
+                    $
+                </p>
+                <br>
+                <p>
+                    $
+                        =
+                        {1 \over 2}(\text{y}_j - 1)
+                        \cdot
+                            coth(x_j\beta_j)
+                        \cdot
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                            { -e^{x_j\beta_j} + e^{-x_j\beta_j} \over cosh(x_j\beta_j) }
+                        \space \Big)
+                    $
+                </p>
+                <p>
+                    Long answer:<br>
+                    Apply the Quotient Rule
+                    $ 
+                        \big (
+                            {f \over g}
+                        \big )'
+                        =
+                        { f' \cdot  g - g' \cdot f \over g^2}
+                    $
+                    , where
+                    $ f = ( {-e^{x_j \beta_j} + e^{-x_j \beta_j}} )$
+                    $, g =cosh(x_j\beta_j)$ 
+                </p>
+                <br>
+                <p>
+                    $
+                        =
+                        {\partial \over \partial \beta_j } 
+                        \Big( \space
+                        { 
+                            {-e^{x_j \beta_j} + e^{-x_j \beta_j}} 
+                        \over 
+                            cosh(x_j\beta_j) 
+                        }
+                        \space \Big)
+                    $
+                    <br>
+                    <br>
+                </p>
+                <p>
+        
+                        $
+                        =
+                        {
+                            {
+                                {\partial \over \partial \beta_j}
+                                \Big ( \space
+                                    -e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                \Big )
+                                \cdot
+                                cosh(x_j\beta_j)
+                                \space
+                                -
+                                \space
+                                ( \space
+                                -e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )
+                                \cdot
+                                {\partial \over \partial \beta_j}
+                                \Big ( \space
+                                cosh(x_j\beta_j)
+                                \Big )
+                
+                                
+                            }
+                            \over
+                            cosh^2(x_j\beta_j)
+                        }
+                        $
+                    </p>
+
+                <p>
+                    Distribute derviative operation to each term in parenthesis 
+                    <br><br>
+                    $
+                        =
+                        {
+                            {
+                                \Big [
+                                {\partial \over \partial \beta_j} ( -e^{x_j \beta_j} )
+                                \space
+                                +
+                                \space
+                                {\partial \over \partial \beta_j} ( e^{-x_j \beta_j} )
+                                \Big ]
+                                \cdot
+                                cosh(x_j\beta_j)
+                                \space
+                                -
+                                \space
+                                ( \space
+                                -e^{x_j \beta_j} + e^{-x_j \beta_j}
+                                )
+                                \cdot
+                                \Big [ \space
+                                {\partial \over \partial \beta_j}
+                                (
+                                    cosh(x_j\beta_j)
+                                )
+                                \Big ]
+            
+                                
+                            }
+                            \over
+                            cosh^2(x_j\beta_j)
+                        }
+                    $
+                </p>
+
+            </div>
+
+
+
+
+
+<!-- -->
+
+
+    <p>
+        Use derivatives rules for exponentials to solve numerator
+        where ${d \over dx}(e^{cx}) = c \cdot e^{cx}$
+        <br><br>
+        $
+            =
+            {
+                {
+                    \Big [
+                    -x_j \cdot e^{x_j \beta_j} 
+                    \space
+                    +
+                    \space
+                    -x_j \cdot e^{-x_j \beta_j} 
+                    \Big ]
+                    \cdot
+                    cosh(x_j\beta_j)
+                    \space
+                    -
+                    \space
+                    ( \space
+                    -e^{x_j \beta_j} + e^{-x_j \beta_j}
+                    )
+                    \cdot
+                    \Big [ \space
+                    {\partial \over \partial \beta_j}
+                    (
+                        cosh(x_j\beta_j)
+                    )
+                    \Big ]
+
+                    
+                }
+                \over
+                {
+                    cosh^2(x_j\beta_j)
+                }
+            }
+        $
+    </p>
+
+    <p>
+        Multiply the binomial expressions together
+        <br><br>
+        $
+            =
+            {
+                {
+                    \Big [
+                    x_j \cdot e^{x_j \beta_j} 
+                    \space
+                    +
+                    \space
+                    x_j \cdot e^{-x_j \beta_j} 
+                    \Big ]
+                    \cdot
+                    ( \space
+                    e^{x_j \beta_j} + e^{-x_j \beta_j}
+                    )
+                    \space
+                    -
+                    \space
+                    ( \space
+                    e^{x_j \beta_j} - e^{-x_j \beta_j}
+                    )
+                    \cdot
+                    \Big [
+                        x_j \cdot e^{x_j \beta_j}
+                    \space
+                    +
+                    \space
+                    -x_j \cdot e^{-x_j \beta_j} 
+                    \Big ]
+                }
+                \over
+                {
+                    (
+                        e^{x_j \beta_j} + e^{-x_j \beta_j}
+                    )^2
+                }
+            }
+        $
+    </p>
+
+    <p>
+        $
+            =
+            {
+                {
+                    (
+                    x_je^{x_j \beta_j} 
+                    \space
+                    +
+                    \space
+                    x_je^{-x_j \beta_j} 
+                    )
+                    \cdot
+                    ( \space
+                    e^{x_j \beta_j} + e^{-x_j \beta_j}
+                    )
+                    \space
+                    -
+                    \space
+                    ( \space
+                    e^{x_j \beta_j} - e^{-x_j \beta_j}
+                    )
+                    \cdot
+                    (
+                        x_je^{x_j \beta_j}
+                    \space
+                    -
+                    \space
+                    x_je^{-x_j \beta_j} 
+                    )
+                }
+                \over
+                {
+                    (
+                        e^{x_j \beta_j} + e^{-x_j \beta_j}
+                    )^2
+                }
+            }
+        $
+    </p>
+
+    <p>
+        $
+            =
+            {
+                {
+                    \Big [
+                        x_je^{x_j\beta_j}e^{x_j\beta_j}
+                        + x_je^{x_j\beta_j}e^{-x_j\beta_j}
+                        + x_je^{-x_j\beta_j}e^{x_j\beta_j}
+                        + x_je^{-x_j\beta_j}e^{-x_j\beta_j}
+                    \Big ]
+                    -
+                    \Big [
+                        x_je^{x_j\beta_j}e^{x_j\beta_j}
+                        - x_je^{-x_j\beta_j}e^{x_j\beta_j}
+                        - x_je^{x_j\beta_j}e^{-x_j\beta_j}
+                        + x_je^{-x_j\beta_j}e^{-x_j\beta_j}
+                    \Big ]
+                }
+                \over
+                {
+                    (
+                        e^{x_j \beta_j} + e^{-x_j \beta_j}
+                    )^2
+                }
+            }
+        $
+    </p>
+
+    <p>
+        Use exponent rules to merge simplify exponent expressions with same base
+        <br><br>
+        $
+            =
+            {
+                {
+                    \Big [
+                        x_je^{2x_j\beta_j}
+                        + x_je^0
+                        + x_je^0
+                        + x_je^{-2x_j\beta_j}
+                    \Big ]
+                    -
+                    \Big [
+                        x_je^{2x_j\beta_j}
+                        - x_je^0
+                        - x_je^0
+                        + x_je^{-2x_j\beta_j}
+                    \Big ]
+                }
+                \over
+                {
+                    (
+                        e^{x_j \beta_j} + e^{-x_j \beta_j}
+                    )^2
+                }
+            }
+        $
+    </p>
+
+    <p>
+        Apply rule such that $x^0 = 1$
+        <br><br>
+        $
+            =
+            {
+                {
+                    \Big [
+                        x_je^{2x_j\beta_j}
+                        + x_j
+                        + x_j
+                        + x_je^{-2x_j\beta_j}
+                    \Big ]
+                    -
+                    \Big [
+                        x_je^{2x_j\beta_j}
+                        - x_j
+                        - x_j
+                        + x_je^{-2x_j\beta_j}
+                    \Big ]
+                }
+                \over
+                {
+                    (
+                        e^{x_j \beta_j} + e^{-x_j \beta_j}
+                    )^2
+                }
+            }
+        $
+    </p>
+
+    <p>
+        Distribute negative sign to righthand expression in numerator
+        <br><br>
+        $
+            =
+            {
+                {
+                    \Big [
+                        x_je^{2x_j\beta_j}
+                        + x_j
+                        + x_j
+                        + x_je^{-2x_j\beta_j}
+                    \Big ]
+                    +
+                    \Big [
+                        - x_je^{2x_j\beta_j}
+                        + x_j
+                        + x_j
+                        - x_je^{-2x_j\beta_j}
+                    \Big ]
+                }
+                \over
+                {
+                    (
+                        e^{x_j \beta_j} + e^{-x_j \beta_j}
+                    )^2
+                }
+            }
+        $
+    </p>
+
+    <p>
+        Group like terms
+        <br><br>
+        $
+            =
+            {
+                {
+                    (
+                        x_je^{2x_j\beta_j}
+                        - x_je^{2x_j\beta_j}
+                    )
+                    + 
+                    (
+                        x_j
+                        + x_j
+                        + x_j
+                        + x_j
+                    )
+                    + 
+                    (
+                        x_je^{-2x_j\beta_j}
+                        - x_je^{-2x_j\beta_j}
+                    )
+                }
+                \over
+                {
+                    (
+                        e^{x_j \beta_j} + e^{-x_j \beta_j}
+                    )^2
+                }
+            }
+        $
+    </p>
+
+    <p>
+        Cancel terms and Combine terms
+        <br><br>
+        $
+            =
+            {
+                {
+                    \enclose{horizontalstrike}{
+                    (
+                        x_je^{2x_j\beta_j}
+                        - x_je^{2x_j\beta_j}
+                    )}
+                    + \space
+                        4x_j
+                    \space +
+                    \enclose{horizontalstrike}{ 
+                    (
+                        x_je^{-2x_j\beta_j}
+                        - x_je^{-2x_j\beta_j}
+                    )}
+                }
+                \over
+                {
+                    (
+                        e^{x_j \beta_j} + e^{-x_j \beta_j}
+                    )^2
+                }
+            }
+        $
+    </p>
+
+    <p>
+        Redefine result as $secth^2(x_j\beta_j)$. Note that: ${d \over dx}\Big(tanh(x)\Big) = {sech(x)^2}$<br>
+        Since $sech(x) = {2 \over e^x + e^{-x}}$ then $sech^2(x) = {4 \over (e^x + e^{-x})^2}$ 
+        <br><br>
+        $
+            =
+            {
+                { 4x_j}
+                \over
+                { ( e^{x_j \beta_j} + e^{-x_j \beta_j} )^2 }
+            }
+        $
+        $
+            =
+            { 4 \over ( e^{x_j \beta_j} + e^{-x_j \beta_j} )^2 }x_j
+        $
+        $
+            = {1 \over cos^2(x_j\beta_j) }x_j
+        $
+        $
+            = sech^2(x_j\beta_j) \cdot x_j
+        $
+        $
+            = x_jsech^2(x_j\beta_j)
+        $
+    </p>
+
+
+
+
+
+    <!-- #ATTEMPT 3-->
+
+        <div>
+            <h4>Attempt 3: COSH & SINH require scalar of 1/2 to be converted, do this last!</h4>
+        </div>
+
+
+
+            <p>
+                Long answer:<br>
+                Apply the Quotient Rule
+                $ 
+                    \big (
+                        {f \over g}
+                    \big )'
+                    =
+                    { f' \cdot  g - g' \cdot f \over g^2}
+                $
+                , where
+                $ f = ( {-e^{x_j \beta_j} + e^{-x_j \beta_j}} )$
+                $, g =( {e^{x_j \beta_j} + e^{-x_j \beta_j}} )$ 
+                <br>
+                <br>
+                $
+                    {\partial \over \partial \beta_j } 
+                    \Big( \space
+                        - tanh(x_j,\beta_j)
+                    \space \Big)
+                    =
+                    {\partial \over \partial \beta_j } 
+                    \Big( \space
+                    - \big (
+                    { 
+                        {e^{x_j \beta_j} - e^{-x_j \beta_j}} 
+                    \over 
+                        {e^{x_j \beta_j} + e^{-x_j \beta_j}} 
+                    }
+                    \big )
+                    \space \Big)
+                    =
+                    {\partial \over \partial \beta_j } 
+                    \Big( \space
+                    { 
+                        {-e^{x_j \beta_j} + e^{-x_j \beta_j}} 
+                    \over 
+                        {e^{x_j \beta_j} + e^{-x_j \beta_j}} 
+                    }
+                    \space \Big)
+                $
+                <br>
+                <br>
+                $
+                =
+                {
+                    {
+                        {\partial \over \partial \beta_j}
+                        ( \space
+                            -e^{x_j \beta_j} + e^{-x_j \beta_j}
+                        )
+                        \cdot
+                        ( \space
+                        e^{x_j \beta_j} + e^{-x_j \beta_j}
+                        )
+                        \space
+                        -
+                        \space
+                        ( \space
+                        -e^{x_j \beta_j} + e^{-x_j \beta_j}
+                        )
+                        \cdot
+                        {\partial \over \partial \beta_j}
+                        ( \space
+                        e^{x_j \beta_j} + e^{-x_j \beta_j}
+                        )
+
+                        
+                    }
+                    \over
+                    {
+                        (
+                            e^{x_j \beta_j} + e^{-x_j \beta_j}
+                        )^2
+                    }
+                }
+                $
+            </p>
+            <p>
+                Distribute derviative operation to each term in parenthesis
+                <br><br>
+                $
+                    =
+                    {
+                        {
+                            \Big [
+                            {\partial \over \partial \beta_j} ( -e^{x_j \beta_j} )
+                            \space
+                            +
+                            \space
+                            {\partial \over \partial \beta_j} ( e^{-x_j \beta_j} )
+                            \Big ]
+                            \cdot
+                            ( \space
+                            e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )
+                            \space
+                            -
+                            \space
+                            ( \space
+                            -e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )
+                            \cdot
+                            \Big [
+                            {\partial \over \partial \beta_j} ( e^{x_j \beta_j} )
+                            \space
+                            +
+                            \space
+                            {\partial \over \partial \beta_j} ( e^{-x_j \beta_j} )
+                            \Big ]
+
+                            
+                        }
+                        \over
+                        {
+                            (
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )^2
+                        }
+                    }
+                $
+            </p>
+            <p>
+                Use derivatives rules for exponentials to solve numerator
+                where ${d \over dx}(e^{cx}) = c \cdot e^{cx}$
+                <br><br>
+                $
+                    =
+                    {
+                        {
+                            \Big [
+                            -x_j \cdot e^{x_j \beta_j} 
+                            \space
+                            +
+                            \space
+                            -x_j \cdot e^{-x_j \beta_j} 
+                            \Big ]
+                            \cdot
+                            ( \space
+                            e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )
+                            \space
+                            -
+                            \space
+                            ( \space
+                            -e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )
+                            \cdot
+                            \Big [
+                             x_j \cdot e^{x_j \beta_j}
+                            \space
+                            +
+                            \space
+                            -x_j \cdot e^{-x_j \beta_j} 
+                            \Big ]
+
+                            
+                        }
+                        \over
+                        {
+                            (
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )^2
+                        }
+                    }
+                $
+            </p>
+
+            <p>
+                Multiply the binomial expressions together
+                <br><br>
+                $
+                    =
+                    {
+                        {
+                            (
+                            -x_j \cdot e^{x_j \beta_j} 
+                            \space
+                            -
+                            \space
+                            x_j \cdot e^{-x_j \beta_j} 
+                            )
+                            \cdot
+                            ( \space
+                            e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )
+                            \space
+                            -
+                            \space
+                            ( \space
+                            -e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )
+                            \cdot
+                            (
+                                x_j \cdot e^{x_j \beta_j}
+                            \space
+                            -
+                            \space
+                            x_j \cdot e^{-x_j \beta_j} 
+                            )
+                        }
+                        \over
+                        {
+                            (
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )^2
+                        }
+                    }
+                $
+            </p>
+
+            <p>
+                $
+                    =
+                    {
+                        {
+                            \Big [
+                                - x_je^{x_j\beta_j}e^{x_j\beta_j}
+                                - x_je^{x_j\beta_j}e^{-x_j\beta_j}
+                                - x_je^{-x_j\beta_j}e^{x_j\beta_j}
+                                - x_je^{-x_j\beta_j}e^{-x_j\beta_j}
+                            \Big ]
+                            -
+                            \Big [
+                                - x_je^{x_j\beta_j}e^{x_j\beta_j}
+                                + x_je^{-x_j\beta_j}e^{x_j\beta_j}
+                                + x_je^{x_j\beta_j}e^{-x_j\beta_j}
+                                - x_je^{-x_j\beta_j}e^{-x_j\beta_j}
+                            \Big ]
+                        }
+                        \over
+                        {
+                            (
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )^2
+                        }
+                    }
+                $
+            </p>
+
+            <p>
+                Use exponent rules to merge simplify exponent expressions with same base
+                <br><br>
+                $
+                    =
+                    {
+                        {
+                            \Big [
+                                -x_je^{2x_j\beta_j}
+                                - x_je^0
+                                - x_je^0
+                                - x_je^{-2x_j\beta_j}
+                            \Big ]
+                            -
+                            \Big [
+                                - x_je^{2x_j\beta_j}
+                                + x_je^0
+                                + x_je^0
+                                - x_je^{-2x_j\beta_j}
+                            \Big ]
+                        }
+                        \over
+                        {
+                            (
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )^2
+                        }
+                    }
+                $
+            </p>
+
+            <p>
+                Apply rule such that $x^0 = 1$
+                <br><br>
+                $
+                    =
+                    {
+                        {
+                            \Big [
+                                - x_je^{2x_j\beta_j}
+                                -  x_j
+                                -  x_j
+                                -  x_je^{-2x_j\beta_j}
+                            \Big ]
+                            -
+                            \Big [
+                                - x_je^{2x_j\beta_j}
+                                + x_j
+                                + x_j
+                                - x_je^{-2x_j\beta_j}
+                            \Big ]
+                        }
+                        \over
+                        {
+                            (
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )^2
+                        }
+                    }
+                $
+            </p>
+
+            <p>
+                Distribute negative sign to righthand expression in numerator
+                <br><br>
+                $
+                    =
+                    {
+                        {
+                            \Big [
+                                - x_je^{2x_j\beta_j}
+                                - x_j
+                                - x_j
+                                - x_je^{-2x_j\beta_j}
+                            \Big ]
+                            +
+                            \Big [
+                                + x_je^{2x_j\beta_j}
+                                - x_j
+                                - x_j
+                                + x_je^{-2x_j\beta_j}
+                            \Big ]
+                        }
+                        \over
+                        {
+                            (
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )^2
+                        }
+                    }
+                $
+            </p>
+
+            <p>
+                Group like terms
+                <br><br>
+                $
+                    =
+                    {
+                        {
+                            (
+                                x_je^{2x_j\beta_j}
+                                - x_je^{2x_j\beta_j}
+                            )
+                            + 
+                            (
+                                - x_j
+                                - x_j
+                                - x_j
+                                - x_j
+                            )
+                            + 
+                            (
+                                x_je^{-2x_j\beta_j}
+                                - x_je^{-2x_j\beta_j}
+                            )
+                        }
+                        \over
+                        {
+                            (
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )^2
+                        }
+                    }
+                $
+            </p>
+
+            <p>
+                Cancel terms and Combine terms
+                <br><br>
+                $
+                    =
+                    {
+                        {
+                            \enclose{horizontalstrike}{
+                            (
+                                x_je^{2x_j\beta_j}
+                                - x_je^{2x_j\beta_j}
+                            )}
+                            - 
+                                4x_j
+                            \space +
+                            \enclose{horizontalstrike}{ 
+                            (
+                                x_je^{-2x_j\beta_j}
+                                - x_je^{-2x_j\beta_j}
+                            )}
+                        }
+                        \over
+                        {
+                            (
+                                e^{x_j \beta_j} + e^{-x_j \beta_j}
+                            )^2
+                        }
+                    }
+                $
+            </p>
+
+            <p>
+                Redefine result as $secth^2(x_j\beta_j)$. Note that: ${d \over dx}\Big(tanh(x)\Big) = {sech(x)^2}$<br>
+                Since $sech(x) = {2 \over e^x + e^{-x}}$ then $sech^2(x) = {4 \over (e^x + e^{-x})^2}$ 
+                <br><br>
+                $
+                    =
+                    {
+                        { -4x_j}
+                        \over
+                        { ( e^{x_j \beta_j} + e^{-x_j \beta_j} )^2 }
+                    }
+                $
+                $
+                    =
+                    { 4 \over ( e^{x_j \beta_j} + e^{-x_j \beta_j} )^2 } \cdot -x_j
+                $
+                $
+                    = {1 \over cos^2(x_j\beta_j) } \cdot -x_j
+                $
+                $
+                    = sech^2(x_j\beta_j) \cdot -x_j
+                $
+                $
+                    = -x_jsech^2(x_j\beta_j)
+                $
+            </p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        
+        
+        <script src='scripts/partA.js'></script>
+
+        <script src="scripts/libs/bootstrap/jquery-3.2.1.slim.min.js"></script>
+        <script src="scripts/libs/bootstrap/popper.min.js"></script>
+        <script src="scripts/libs/bootstrap/bootstrap.min.js"></script>
+    </body>
+</html>
