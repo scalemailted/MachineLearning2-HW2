@@ -75,8 +75,94 @@
 
         <div class='container-fluid'>
             <h4>Solution:</h4>
+            <p>
+                In this project, must model a logistic classifier for cancer detection.<br>
+                $$ \text{Tumor}  \in \{ \text{Benign}, \text{Malignant} \}$$
+                More precisely, we are trying to model:
+                $$ P(G|X) $$
+                where $X = \{x_1,x_2\}$ and $G \in \{ \text{Benign, Malignant}  \}$,
+                $x_1=$ <i>Size of the tumor</i> & $x_2 =$ <i>Age of the tumor</i>. 
+                <br>
+                We can express the linear equation as:
+                $$ X_0\beta_0 + X_1\beta_1 + \cdots + X_p\beta_p = X^T\beta, $$
+                Where the $i^{th}$ row in <b>X</b> as : $x_{i}^{T} = (1, x_1,\cdots,x_n)$
+                <br><br>
+                To convert the output of a linear equation into probability, we can plug it (i.e., $X^T\beta$) into 
+                a S-curve function such as the hyperbolic tangent. 
+                <br><br>
+                Plugging in the probability function:
+                $$  P(G|X) = f_{tanh}(X^T\beta) $$
+                <br><br>
+                We can establish the classification rule based on the above equation as:
+
+                $$  G=1 \text{, if } [f_{tanh}(X^T\beta) \ge 0] \text{, that is } [(X^T\beta) \ge 0] $$
+                $$  G=2 \text{, if } [f_{tanh}(X^T\beta) \le 0] \text{, that is } [(X^T\beta) \le 0] $$
+                <br><br>
+                Logisitic classifier models are usually fit by 
+                <span style='color:red;'><i><b>maximum likelihood,</b></i></span>,
+                using the conditional likelihood of <i>G</i> given <i>X</i>. Since Pr(<i>G|X</i>) completely specifies
+                the conditional distribution. 
+                <br><br>
+                The log-likelihood for N observations is:
+                $$ l(\theta) = \sum\limits_{i=1}^{N} \text{log  }p_{g_{i}}(x_i;\theta) $$
+                where $p_k(x_i;\theta)=Pr(G=k|X=x_i;\theta)$
+            </p>
+        </div>
+        <hr>
+
+        <div class='container-fluid'>
+            <p><b>Bernoulli distribution:</b></p>
+            <p>
+                Bernoulli disrtribution is a discrete distribution that results two possible outcomes 
+                ( $y \in \{ 0,1 \}$ ) and one of them occurs with probability <i>p</i> whereas the other occurs 
+                with probability <i>-p</i>. Such a probability density function can be written as:
+
+                $$ P(y) =  
+                    \begin{cases}
+                    -p,  & \text{if $y$} < 0  \\
+                    +p,   & \text{if $y$} \ge 0
+                    \end{cases}
+                $$
+
+                In compact form, it can be expressed as:
+                $$
+                    P(y) = p^{{1 \over 2}(1 + y)} \cdot -p^{{1 \over 2}(1 - y)}
+                $$
+                We can see that:<br>
+                when <i>y</i>=1, we get P(y)=p<br>
+                when <i>y</i>=-1, we get P(y)=-p<br>
+                <br>
+                For binary classification problems, $C_i \in \{ 0,1\}$, we can also, express the distribution as:
+                $$ C_i \sim Bernoulli(p) $$
+
+            </p>
+        </div>
+        <hr>
+        <div class='container-fluid'>
+            <p>
+            Its convenient to code the two-class $g_i$ via a -1/1 response $y_i$, 
+            where $y_i=1$ when $g_i=1$ and $y_i=-1$ when $g_i=2$ 
+            <br><br>
+            Let $p_1(x;\theta)=p(x;\theta)$ and $p_2(x;\theta)=-p(x;\theta)$.
+            Also the output can be modeled using the Bernoulli distribution:
+            $$ \text{y}_i \sim Bernoulli(\eta_i) $$
+            where, $eta_i = f_{tanh}(x^T\beta) = p(x_i;\beta)$
+            <br><br>
+            Therefore, we can write:
+            $$ P(\text{y}_i) = \eta_{i}^{{1 \over 2}(1+\text{y}_i)} \cdot -\eta_{i}^{{1 \over 2}(1-\text{y}_i)} $$
+            Hence, the <span class='text-danger'><b><i>likelihood:</i></b></span>
+            $$  
+                L(\beta) = \prod\limits_{i=1}^{N} P(\text{y}_i) 
+                = \prod\limits_{i=1}^{N} 
+                    \Big \{
+                     \eta_{i}^{{1 \over 2}(1+\text{y}_i)} \cdot -\eta_{i}^{{1 \over 2}(1-\text{y}_i)} 
+                    \Big \}
+            $$ 
+            </p>
+
         </div>
 
+        <hr>
 
         <div class='container-fluid'>
 
