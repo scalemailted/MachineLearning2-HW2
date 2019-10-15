@@ -510,6 +510,35 @@
                         \Bigg \}
                     $
                 </p>
+                <p>
+                    Combine terms in parenthetical expression
+                    <br> 
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} (1 + \text{y}_i) 
+                            \cdot x_j
+                            \Big(
+                                {1 - tanh^2(X^T\beta) \over tanh(X^T\beta)} 
+                            \Big)
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Redefine in terms of $\eta_i$:
+                    <br>
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} (1 + \text{y}_i) 
+                            \cdot 
+                            x_j
+                            \big(
+                                {1 - \eta^{2}_{i} \over \eta}
+                            \big)
+                        \Bigg \}
+                    $
+                </p>
             </div>
             <div>
                 <p><b>Right side</b></p>
@@ -774,6 +803,36 @@
                                 {1 \over tanh(X^T\beta)}
                                 - tanh(X^T\beta)
                             \Big ]
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Combine terms in parenthetical expression:
+                    <br>
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} (1 - \text{y}_i) 
+                            \cdot 
+                            x_j
+                            \Big [
+                                {1 - tanh^2(X^T\beta) \over tanh(X^T\beta)}
+                            \Big ]
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Redefine in terms of $\eta_i$:
+                    <br>
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} (1 - \text{y}_i) 
+                            \cdot 
+                            x_j
+                            \big(
+                                {1 - \eta^{2}_{i} \over \eta}
+                            \big)
                         \Bigg \}
                     $
                 </p>
