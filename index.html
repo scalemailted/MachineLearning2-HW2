@@ -170,19 +170,783 @@
             </p>
 
         </div>
+        <hr>
+        <div class='container-fluid'>
+
+            <h4>Trigonmentric Properties:</h4>
+            <p>
+                To properly derive the Logistical Classifer solution, using the hyperbolic tangent function,
+                the use of known trigonmentric identities is useful for rapid conversion of our formula.
+                See below, for some trigonmetric properties that will be used throughout this solution. 
+            </p>
+            <br>
+
+            <h4>Hyperbolic Trigonometric Identities:</h4>
+            <p>$sinh(x) = {e^x - e^{-x} \over 2}$</p>
+            <p>$cosh(x) = {e^x + e^{-x} \over 2}$</p>
+            <p>$sech(x) = {1 \over cosh(x)} = {2 \over e^x + e^{-x}}$</p>
+            <p>$csch(x) = {1 \over sinh(x)} = {2 \over e^x - e^{-x}}$</p>
+            <p>$tanh(x) = {sinh(x) \over cosh(x)} = {e^x - e^{-x} \over e^x + e^{-x}}$</p>
+            <p>$coth(x) = {1 \over tanh(x)} = {cosh(x) \over sinh(x)} = {e^x + e^{-x} \over e^x - e^{-x}}$</p>
+            <br>
+
+            <h4>Hyperbolic Trigonometric Pythagorean Identities:</h4>
+            <p> $cosh^2(x) - sinh^2(x) = 1$</p>
+            <p> $tanh^2(x) + sech^2(x) = 1$</p>
+            <p> $coth^2(x) - csch^2(x) = 1$</p>
+            <br>
+            
+            <h4>Derivatives for Hyperbolic Trigonometric Identities</h4>
+            <p>$ {d \over dx} sinh(x) = cosh(x) $ </p>
+            <p>$ {d \over dx} cosh(x) = sinh(x) $ </p>
+            <p>$ {d \over dx} tanh(x) = sech^2(x) = 1-tanh^2(x) $</p>
+            <p>$ {d \over dx} coth(x) = -csch^2(x) = 1-coth^2(x) $</p>
+            <p>$ {d \over dx} sech(x) = -sec(x)tanh(x)$</p>
+            <p>$ {d \over dx} csch(x) = -csch(x)coth(x) $</p>
+        </div>
 
         <hr>
 
         <div class='container-fluid'>
-
-            <h4>Hyperbolic Trigonometic Identities:</h4>
-             <div>$sinh(x) = {e^x - e^{-x} \over 2}$</div>
-             <div>$cosh(x) = {e^x + e^{-x} \over 2}$</div>
-             <div>$sech(x) = {1 \over cosh(x)} = {2 \over e^x + e^{-x}}$</div>
-             <div>$csch(x) = {1 \over sinh(x)} = {2 \over e^x - e^{-x}}$</div>
-             <div>$tanh(x) = {sinh(x) \over cosh(x)} = {e^x - e^{-x} \over e^x + e^{-x}}$</div>
-             <div>$coth(x) = {1 \over tanh(x)} = {cosh(x) \over sinh(x)} = {e^x + e^{-x} \over e^x - e^{-x}}$</div>
+            <h4>Log-likelihood: <i>(Probabilty Density)</i></h4>
+            <p>
+                <i>Note:</i> Must find a strategy to remove the negative term from rightmost log function<br>
+                $
+                    l(\beta) = \text{log} \space L(\beta) = \sum\limits_{i=1}^{N}
+                    \Bigg \{
+                        {1 \over 2} 
+                        (1 + \text{y}_i) 
+                        \cdot 
+                        \text{log}
+                        \Big(
+                            tanh(X^T\beta)
+                        \Big)
+                        +
+                        {1 \over 2} 
+                        (1 - \text{y}_i) 
+                        \cdot 
+                        \text{log}
+                        \Big(
+                            -tanh(X^T\beta)
+                        \Big)
+                    \Bigg \}
+                $
+            </p>
+            <p>
+                Use Trigonmentric Identities to take alternate form of tanh function <br> 
+                $
+                    =
+                   \sum\limits_{i=1}^{N}
+                    \Bigg \{
+                        {1 \over 2} 
+                        (1 + \text{y}_i) 
+                        \cdot 
+                        \text{log}
+                        \Big(
+                            tanh(X^T\beta)
+                        \Big)
+                        +
+                        {1 \over 2} 
+                        (1 - \text{y}_i) 
+                        \cdot 
+                        \text{log}
+                        \Big(
+                            - {e^x - e^{-x} \over {e^x + e^{-x}}}
+                        \Big)
+                    \Bigg \}
+                $
+            </p>
+            <p>
+                Distriubte negative sign to numerator<br> 
+                $
+                    =
+                    \sum\limits_{i=1}^{N}
+                    \Bigg \{
+                        {1 \over 2} 
+                        (1 + \text{y}_i) 
+                        \cdot 
+                        \text{log}
+                        \Big(
+                            tanh(X^T\beta)
+                        \Big)
+                        +
+                        {1 \over 2} 
+                        (1 - \text{y}_i) 
+                        \cdot 
+                        \text{log}
+                        \Big(
+                            {e^{-x} - e^{x} \over {e^x + e^{-x}}}
+                        \Big)
+                    \Bigg \}
+                $
+            </p>
+            <p>
+                Since $tanh = {sinh \over cosh}$, then use $cosh$ as denominator term<br> 
+                $
+                    =
+                    \sum\limits_{i=1}^{N}
+                    \Bigg \{
+                        {1 \over 2} 
+                        (1 + \text{y}_i) 
+                        \cdot 
+                        \text{log}
+                        \Big(
+                            tanh(X^T\beta)
+                        \Big)
+                        +
+                        {1 \over 2} 
+                        (1 - \text{y}_i) 
+                        \cdot 
+                        \text{log}
+                        \Big(
+                            {e^{-x} - e^{x} \over cosh(X^T\beta) }
+                        \Big)
+                    \Bigg \}
+                $
+            </p>
+            <p>
+                    Apply sum rule $\sum\{x+y\} = \sum\{x\}+\sum\{y\}$<br> 
+                    $
+                        =
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} 
+                            (1 + \text{y}_i) 
+                            \cdot 
+                            \text{log}
+                            \Big(
+                                tanh(X^T\beta)
+                            \Big)
+                        \Bigg \}
+                        +
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} 
+                            (1 - \text{y}_i) 
+                            \cdot 
+                            \text{log}
+                            \Big(
+                                {e^{-x} - e^{x} \over cosh(X^T\beta) }
+                            \Big)
+                        \Bigg \}
+                    $
+                </p> 
         </div>
+
+        <hr>
+
+        <div class='container-fluid'>
+            <h4>Gradient: <i>(First-order Derivative)</i></h4>
+            <p>
+                Next, we need to take the gradient  to get the $\beta$ that maximize the log-likelihood.
+                However, since the terms will be longer, we like to compute the gradient by parts of the 
+                above equation. Let us compute the derivatives of the two $\sum$ parts.
+            </p>
+            
+            <div>
+                <p><b>Left side</b></p>
+                <p>
+                    $
+                        {\partial \over \partial \beta_j}
+                        \Bigg(
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} 
+                            (1 + \text{y}_i) 
+                            \cdot 
+                            \text{log}
+                            \Big(
+                                tanh(X^T\beta)
+                            \Big)
+                        \Bigg \}
+                        \Bigg)
+                    $
+                </p>
+                <p>
+                    Apply Rule: ${d \over dx} \sum\{ x\} = \sum\{ {d \over dx}x\}$<br>
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {\partial \over \partial \beta_j}
+                            \Bigg(
+                            {1 \over 2} 
+                            (1 + \text{y}_i) 
+                            \cdot 
+                            \text{log}
+                            \Big(
+                                tanh(X^T\beta)
+                            \Big)
+                        \Bigg)
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Apply rule: ${d \over dx}(cx) = c{d \over dx}(x)$ to factor out constant term of derivative<br>
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} 
+                            (1 + \text{y}_i) 
+                            \cdot 
+                            {\partial \over \partial \beta_j}
+                            \Bigg(
+                            \text{log}
+                            \Big(
+                                tanh(X^T\beta)
+                            \Big)
+                        \Bigg)
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Solve log derivative with u substition: ${d \over du}\text{log}(u) = {1 \over u} \cdot ({d \over du} u)$ 
+                    ; where $u = tanh(X^T\beta)$<br> 
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} 
+                            (1 + \text{y}_i) 
+                            \cdot 
+                            \Bigg(
+                            {1 \over tanh(X^T\beta)}
+                            \cdot
+                            {\partial \over \partial \beta_j}
+                            \Big(
+                                tanh(X^T\beta)
+                            \Big)
+                        \Bigg)
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Use u substition and trigonmentric derivative rule:
+                    ${d \over du}tanh(u)=sech^2(u) \cdot {d \over du}u$
+                    <br> 
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} 
+                            (1 + \text{y}_i) 
+                            \cdot 
+                            \Bigg(
+                            {1 \over tanh(X^T\beta)}
+                            \cdot
+                                sech^2(X^T\beta) 
+                                \cdot
+                                {\partial \over \partial\beta_j}
+                                (X^T\beta)
+                        \Bigg)
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Combine trigonmetric terms & solve the derivative w.r.t $\beta_j$ 
+                    <br> 
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} 
+                            (1 + \text{y}_i) 
+                            \cdot 
+                            \Bigg(
+                            {1 \over tanh(X^T\beta)}
+                            \cdot
+                                sech^2(X^T\beta) 
+                                \cdot x_j
+                        \Bigg)
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Factor $x_j$ term out of parenthetical expression:
+                    $(ax) = a(x)$
+                    <br> 
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} 
+                            (1 + \text{y}_i) 
+                            \cdot 
+                            x_j
+                            \Bigg(
+                            {1 \over tanh(X^T\beta)}
+                            \cdot
+                                sech^2(X^T\beta) 
+                        \Bigg)
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Convert with rules for Trigonmentric Pythagorean identity:
+                    $sech^2(x) = [1 - tanh^2(x)]$
+                    <br> 
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} 
+                            (1 + \text{y}_i) 
+                            \cdot 
+                            x_j
+                            \Bigg(
+                            {1 \over tanh(X^T\beta)}
+                            \cdot
+                                \Big(1 - tanh^2(X^T\beta)\Big)
+                        \Bigg)
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Distribute ${1 \over tanh}$ term
+                    <br> 
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} (1 + \text{y}_i) 
+                            \cdot x_j
+                            \Big(
+                                {1 \over tanh(X^T\beta)} 
+                                - tanh(X^T\beta)
+                            \Big)
+                        \Bigg \}
+                    $
+                </p>
+            </div>
+            <div>
+                <p><b>Right side</b></p>
+                <p>
+                    $
+                        {\partial \over \partial \beta_j}
+                        \Bigg(
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} 
+                            (1 - \text{y}_i) 
+                            \cdot 
+                            \text{log}
+                            \Big(
+                                {e^{-x} - e^{x} \over cosh(X^T\beta) }
+                            \Big)
+                        \Bigg \}
+                        \Bigg)
+                    $
+                </p>
+                <p>
+                    Apply Log Rule: $\text{log}({x \over y}) = \text{log}(x) - \text{log}(y)$<br>
+                    $
+                        {\partial \over \partial \beta_j}
+                        \Bigg(
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} 
+                            (1 - \text{y}_i) 
+                            \cdot 
+                            \Big [
+                            \text{log}\big( {e^{-x} - e^{x} } \big)
+                            -
+                            \text{log}\big( cosh(X^T\beta) \big)
+                            \Big ]
+                        \Bigg \}
+                        \Bigg)
+                    $
+                </p>
+                <p>
+                    Apply Rule: ${d \over dx} \sum\{ x\} = \sum\{ {d \over dx}x\}$<br>
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {\partial \over \partial \beta_j}
+                            \Bigg(
+                            {1 \over 2} 
+                            (1 - \text{y}_i) 
+                            \cdot 
+                            \Big [
+                            \text{log}\big( {e^{-x} - e^{x} } \big)
+                            -
+                            \text{log}\big( cosh(X^T\beta) \big)
+                            \Big ]
+                            \Bigg)
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Apply rule: ${d \over dx}(cx) = c{d \over dx}(x)$ to factor out constant term of derivative<br>
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} (1 - \text{y}_i) 
+                            \cdot 
+                            {\partial \over \partial \beta_j}
+                            \Bigg(
+                            \Big [
+                            \text{log}\big( {e^{-x} - e^{x} } \big)
+                            -
+                            \text{log}\big( cosh(X^T\beta) \big)
+                            \Big ]
+                            \Bigg)
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Apply rule: ${d \over dx}(x - y) = {d \over dx}x - {d \over dx}y$<br>
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} (1 - \text{y}_i) 
+                            \cdot 
+                            
+                            \Big [
+                            \space
+                            \underbrace{ 
+                            {\partial \over \partial \beta_j}
+                            \text{log}\big( {e^{-x} - e^{x} } \big)
+                            \space
+                            }_\text{part a}
+                            -
+                            \underbrace{ 
+                            \space
+                            {\partial \over \partial \beta_j}
+                            \text{log}\big( cosh(X^T\beta) \big)
+                            }_\text{part b}
+                            \space
+                            \Big ]
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Solve the independent derivatives of part $\text{a}$ and $\text{b}$ <br>
+                </p>
+                <div>
+                    [ <b><i>part a</i></b> ]: 
+                    Solve
+                    ${\partial \over \partial \beta_j} \text{log}\big( {e^{-x} - e^{x} } \big)$
+                    <br>
+                    <p>
+                        Solve log derivative with u substition: ${d \over du}\text{log}(u) = {1 \over u} \cdot ({d \over du} u)$ 
+                        ; where $u = (e^{-x} - e^x)$<br> 
+                        $
+                            {1 \over (e^{-x} - e^x)} \cdot {\partial \over \partial \beta_j}(e^{-x} - e^x)
+                        $
+                    </p>
+                    <p>
+                        Distribute the derivative operator into the parenthetical expression: 
+                        ${d \over dx}(a - b) = {d \over dx}a - {d \over dx}b$
+                        <br>
+                        $
+                        {1 \over (e^{-x} - e^x)} 
+                        ( 
+                        {\partial \over \partial \beta_j}e^{-x} 
+                        - 
+                        {\partial \over \partial \beta_j}e^x
+                        )
+                        $
+                    </p>
+                    <p>
+                        Apply rules of exponents: 
+                        ${d \over dx}e^{cx} = ce^x$ 
+                        <br>
+                        $
+                        {1 \over (e^{-X^T\beta} - e^{X^T\beta})} 
+                        ( 
+                        -x_je^{-X^T\beta} 
+                        - 
+                        x_je^{X^T\beta}
+                        )
+                        $
+                    </p>
+                    <p>
+                        Factor negative sign from right parenthetical expression: 
+                        $(-a - b) = -(a + b)$ 
+                        <br>
+                        $
+                            -{( x_je^{-X^T\beta} + x_je^{X^T\beta} ) 
+                        \over 
+                            (e^{-X^T\beta} - e^{X^T\beta})
+                        } 
+                        $
+                    </p>
+                    <p>
+                        Apply negative sign into denominator & factor out $x_j$ in numerator
+                        <br>
+                        $
+                            {(e^{-X^T\beta} + e^{X^T\beta} ) 
+                        \over 
+                            (-e^{-X^T\beta} + e^{X^T\beta})
+                        } \cdot x_j
+                        $
+                    </p>
+                    <p>
+                        Use trig identities on numerator & denominator
+                        <br>
+                        $
+                            {(e^{X^T\beta} + e^{-X^T\beta} ) 
+                        \over 
+                            (e^{X^T\beta} -e^{-X^T\beta} )
+                        } \cdot x_j
+                        =
+                        {cosh(X^T\beta) \over sinh(X^T\beta)} \cdot x_j
+                        = coth(X^T\beta) \cdot x_j
+                        = {1 \over tanh(X^T\beta)} \cdot x_j
+                        $
+                    </p>
+                </div>
+                <div>
+                    [ <b><i>part b</i></b> ]:
+                    Solve
+                    ${\partial \over \partial \beta_j} \text{log}\big( cosh(X^T\beta) \big)$
+                    <br>
+                    <p>
+                        Solve log derivative with u substition: ${d \over du}\text{log}(u) = {1 \over u} \cdot ({d \over du} u)$ 
+                        ; where $u = cosh(X^T\beta)$<br> 
+                        $
+                            =
+                            {1 \over cosh(X^T\beta)} \cdot {\partial \over \partial \beta_j}(cosh(X^T\beta))
+                        $
+                    </p>
+                    <p>
+                        Use u subsition & chain rule for Trigonmetric derivative: 
+                        ${d \over du}cosh(u) = sinh(u) \cdot {d \over du}u  $
+                        <br>
+                        $
+                            =
+                            {1 \over cosh(X^T\beta)} 
+                            \cdot 
+                            \Big( sinh(X^T\beta) 
+                            \cdot {\partial \over \partial\beta_j}
+                            (X^T\beta)
+                            \Big)
+                        $
+                    </p>
+                    <p>
+                        Combine trigonmetric terms & solve the derivative w.r.t $\beta_j$ 
+                        <br>
+                        $
+                            =
+                            {sinh(X^T\beta) \over cosh(X^T\beta)}  
+                            \cdot x_j
+                        $
+                    </p>
+                    <p>
+                            Use trigonmentric identities: 
+                            ${d \over du}cosh(u) = sinh(u) \cdot {d \over du}u  $
+                            <br>
+                            $ 
+                                = x_j \cdot tanh(X^T\beta)
+                            $
+                    </p>
+                </div>
+                <p>
+                    [<b><i> part a + b </i></b> ]:
+                    Redefine summation with parts $\text{a}$ & $\text{b}$
+                    <br>
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} (1 - \text{y}_i) 
+                            \cdot 
+                            \Big [
+                            \underbrace{ 
+                            \big (
+                                x_j \cdot {1 \over tanh(X^T\beta)}
+                            \big ) 
+                            }_\text{part a}
+                            -
+                            \underbrace{ 
+                            \big( 
+                                x_j \cdot tanh(X^T\beta)
+                            \big )
+                            }_\text{part b}
+                            \space
+                            \Big ]
+                        \Bigg \}
+                    $
+                </p>
+                <p>
+                    Factor out $x_j$ term:
+                    $(ax - bx) = x(a - b)$
+                    <br>
+                    $
+                        \sum\limits_{i=1}^{N}
+                        \Bigg \{
+                            {1 \over 2} (1 - \text{y}_i) 
+                            \cdot 
+                            x_j
+                            \Big [
+                                {1 \over tanh(X^T\beta)}
+                                - tanh(X^T\beta)
+                            \Big ]
+                        \Bigg \}
+                    $
+                </p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class='container-fluid'>
+            <h4>Hessian: <i>(Second-order Derivative)</i></h4>
+            <p>
+                $
+                    \text{H} = 
+                    {\partial \over \partial \beta_j} 
+                    \Big (
+                        {\partial \over \partial \beta_j} 
+                        \big (
+                            l(\beta)
+                        \big )
+                    \Big )
+                    =
+                    {\partial \over \partial \beta_j} 
+                    \Big (
+                        \sum\limits_{i=1}^{N}
+                        \Big \{
+                            x_j(\eta^{-1} - \eta )
+                        \Big \}
+                    \Big )
+                $
+            </p>
+            <br>
+            <p>
+                Define expression in terms of $tanh(X^T\beta)$<br>
+                $
+                    =
+                    {\partial \over \partial \beta_j} 
+                    \Bigg (
+                        \sum\limits_{i=1}^{N}
+                        \Big \{
+                            x_{i,j}
+                            \Big (
+                                coth(X^T\beta) - tanh(X^T\beta)
+                            \Big )
+                        \Big \}
+                    \Bigg )
+                $
+            </p>
+            <p>
+                Distribute $x_{i,j}$ term into parenthetical expression<br>
+                $
+                    =
+                    {\partial \over \partial \beta_j} 
+                    \Bigg (
+                        \sum\limits_{i=1}^{N}
+                        \Big \{
+                                x_{i,j}coth(X^T\beta) -  x_{i,j}tanh(X^T\beta)
+                        \Big \}
+                    \Bigg )
+                $
+            </p>
+            <p>
+                Apply rule for derivatives on sums: ${d \over dx} \sum \{x\} = \sum\{ {d \over dx}(x) \}$<br>
+                $
+                    =
+                    \sum\limits_{i=1}^{N}
+                    \Bigg \{
+                        {\partial \over \partial \beta_j} 
+                        \Big (
+                            x_{i,j}coth(X^T\beta) 
+                        \Big )
+                        -  
+                        {\partial \over \partial \beta_j} 
+                        \Big (
+                            x_{i,j}tanh(X^T\beta)
+                        \Big )
+                    \Bigg \}
+                $
+            </p>
+            <p>
+                Apply Rules for Trigonmetric Derivatives & apply chain rule for nested term<br>
+                $
+                    =
+                    \sum\limits_{i=1}^{n} \Bigg \{
+                    x_j \Big( -csch^2(X^T\beta)) \cdot x_j \Big)  
+                    - 
+                    x_j \Big( sech^2(X^T\beta)) \cdot x_j \Big) 
+                    \Bigg \}
+                $
+            </p>
+            <p>
+                Convert with rules for Trigonmentric Pythagorean identity & factor out $x_j$ term<br>
+                $
+                    =
+                    \sum\limits_{i=1}^{n} \Bigg \{
+                    x_j \Big( 1 - coth^2(X^T\beta) \Big) x_j 
+                    - 
+                    x_j \Big( 1 - tanh^2(X^T\beta) \Big) x_j
+                    \Bigg \}
+                $
+            </p>
+            <br>
+            <p>
+                Refactor expression to group parenthetical expressions between $x_j$ terms<br>
+                $
+                    =
+                    \sum\limits_{i=1}^{n} \Bigg \{
+                    x_j 
+                    \Bigg[
+                        \Big( 1 - coth^2(X^T\beta) \Big) 
+                        - 
+                        \Big( 1 - tanh^2(X^T\beta) \Big) 
+                    \Bigg ]
+                    x_j
+                    \Bigg \}
+                $
+            </p>
+            <br>
+            <p>
+                Combine nested parenthetical expressions & simplify<br>
+                $
+                    =
+                    \sum\limits_{i=1}^{n} \Bigg \{
+                    x_j 
+                    \Bigg[
+                        \cancel{1} - coth^2(X^T\beta)  
+                         \cancel{- 1} + tanh^2(X^T\beta) 
+                    \Bigg ]
+                    x_j
+                    \Bigg \}
+                $
+            </p>
+            <br>
+            <p>
+                Redefine equation in terms of $tanh(X^T\beta)$ <br>
+                $
+                    =
+                    \sum\limits_{i=1}^{n} \Bigg \{
+                    x_j 
+                    \Bigg[
+                        - {1 \over tanh^2(X^T\beta)  }
+                        + tanh^2(X^T\beta) 
+                    \Bigg ]
+                    x_j
+                    \Bigg \}
+                $
+            </p>
+            <br>
+            <p>
+                Redefine equation in terms of $\eta_i$ <br>
+                $
+                    =
+                    \sum\limits_{i=1}^{n} \Bigg \{
+                    x_j
+                    \underbrace{ 
+                    \Big[
+                        \eta^{2}_{i} 
+                        - {1 \over \eta^{2}_{i} } 
+                    \Big ]
+                    }_W
+                    x_j
+                    \Bigg \}
+                $
+            </p>
+
+            <p>
+                Final solution in terms of W using matrices<br>
+                $
+                    = X^{T} W X
+                $
+            </p>
+        </div>
+
+        
 
         <div class='container-fluid'>
             <h4 class='display'>Part B.</h4>
