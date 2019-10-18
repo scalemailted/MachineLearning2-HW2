@@ -1005,6 +1005,24 @@
             </p>
         </div>
 
+        <hr>
+
+        <div class='container-fluid'>
+            <h4>Logistic Regression Algorithm</h4>
+            <ol>
+                <li>Initialize $\beta$ with zero(s)</li>
+                <li>Load $X$</li>
+                <li>Load $y$ matrix {y=0 if Benign else y=1 for Malignant class}</li>
+                <li>Compute $\eta$ as: $\eta_i = p(x_i;\beta)= tanh(X^{T}_i\beta)$, where $i=1 to N$.</li>
+                <li>Compute $W_{N \times N}$ (the diagonal matrix) and the $i^{th}$ diagonal element
+                    $p(x_i;\beta)(-p(x_i;\beta))$
+                </li>
+                <li>Compute $z$ as $z= \big( X\beta(t) + W^{-1}(y-\eta) \big)$</li>
+                <li>Compute next $\beta$ as $\beta(t+1)=(X^TWX)^{-1}X^TWz$</li>
+                <li>Check exit conditions, else go to step 4</li>
+            </ol>
+        </div>
+
         
 <!--
         <div class='container-fluid'>
